@@ -19,7 +19,7 @@ int main(int argc,char* argv[])
 {
     string arg;
     bool dlf = 0,dcr = 0,dht = 0,dsp = 0,dsap = 0; // d = delete (lf = line feed)
-    bool tl = 0;
+    bool tl = 0,tr = 0;
     bool dllf = 0; // dllf = delete last line feed
     char sign[SIGNSIZE] = {0};
     int pos = -1; // position vom Zeichen welches geloescht werden soll
@@ -38,11 +38,7 @@ int main(int argc,char* argv[])
                 case 't': { dht = 1; break; }
                 case 's': { dsp = 1; break; }
                 case 'b': { tl = 1; break; }
-                case 'e':
-                {
-                    // todo
-                    break;
-                }
+                case 'e': { tr = 1; break; }
                 case 'd':{dsap = 1;break;}
                 case 'i':{s = -7;break;}
                 case 'r':{dllf = 1;break;}
@@ -143,14 +139,14 @@ int main(int argc,char* argv[])
     
     std::cin.getline(l,BUFSIZE,'\0');
     
-    // ermitteln wie lang der String ist
+    // determine how long the string is
     int byte = 0;
     for(int i = 0;i < BUFSIZE;i++)
     {
         if(l[i] == '\0')
         {
             byte = i;
-            i = BUFSIZE;
+            i = BUFSIZE; // for end
         }
     }
     
@@ -182,6 +178,8 @@ int main(int argc,char* argv[])
                     r += l[i];
                 }
         }
+        pr(r,dllf);
+        return 0;
     }
     
     // if the option --lf, --cr, --ht or/and --sp is set
@@ -208,8 +206,23 @@ int main(int argc,char* argv[])
                 else { f = 0; }
         }
         
-        // --trim-left
-        if((pos == -1) && (tl == 1))
+        // --trim-left | write all characters back to l
+        /*if(tl == 1)
+        {
+            memset(l,0,BUFSIZE);
+            for(int i = 0;i < r.length();i++)
+            {
+                l[i] = r[i];
+            }
+            r = "";
+        }*/
+    }
+    
+    // if the option --trim-left is set
+    if(tl == 1)
+    {
+        // write all characters back to l
+        if((dlf == 1) || (dcr == 1) || (dsp == 1))
         {
             memset(l,0,BUFSIZE);
             for(int i = 0;i < r.length();i++)
@@ -218,29 +231,53 @@ int main(int argc,char* argv[])
             }
             r = "";
         }
-    }
-    
-    // --trim-left
-    if((pos == -1) && (tl == 1))
-    {
         for(int i = 0;i < byte;i++)
         {
+            // determine the first character that is not a control character
             if((isalpha(l[i])) || (isdigit(l[i])) || (ispunct(l[i])))
             {
                 for(int c = i;c < byte;c++)
                 {
                     if(l[c] != '\0') { r += l[c]; }
                 }
-                i = BUFSIZE;
+                i = BUFSIZE; // for end
+            }
+        }
+    }
+    
+    // if the option --trim-right is set
+    if(tr == 1)
+    {
+        if(tl == 1)
+        {
+            memset(l,0,BUFSIZE);
+            for(int i = 0;i < r.length();i++)
+            {
+                l[i] = r[i];
+            }
+            r = "";
+        }
+        
+        for(int i = byte - 1;i >= 0;i--)
+        {
+            // determine the last character that is not a control character
+            if((isalpha(l[i])) || (isdigit(l[i])) || (ispunct(l[i])))
+            {
+                for(int c = 0;c <= i;c++)
+                {
+                    if(l[c] != '\0') { r += l[c]; }
+                }
+                i = -1; // for end
             }
         }
     }
     
     // output
+    pr(r,dllf);
     /*if(dllf == 1) { cout << r; }
         else { cout << r << endl; }*/
     
-    help();
+    //help();
     
     return 0;
 }
@@ -255,14 +292,24 @@ void help()
     cout << s << "-s, --sp             Removes all spaces." << endl;
     cout << s << "-b, --trim-left      Removes spaces and the following control characters that" << endl;
     cout << s << "                     appear to the left of the string. \"\\n \\t \\r\"" << endl;
-    cout << s << "-e, --end            Trim Right" << endl;
+    cout << s << "-e, --trim-right     Trim Right" << endl;
     cout << s << "-d, --del-sign-at    Deletes a character at the specified position. The first character has the index 1." << endl;
     cout << s << "                     This option can only be combined with -r, --del-last-lf and with -i, --if." << endl;
     cout << s << "-i, --if             Checks whether there is a specific character in the place of -d, --del-sign-at." << endl;
     cout << s << "                     Only one character can be specified here." << endl;
     cout << s << "-r, --del-last-lf    The del program inserts a line break (lf) at the end of the string." << endl;
     cout << s << "                     If this is not needed, it can be prevented with the option -r, --del-last-lf." << endl << endl;
-    cout << s << "Die maximale Puffer Gr. ist " << BUFSIZE << endl;
+    cout << s << "-h, --help           Display this help and exit." << endl;
+    cout << s << "-v, --version        Output version information and exit." << endl;
+    cout << s << "                     The maximum buffer size is " << BUFSIZE << "." << endl;
+}
+
+void version()
+{
+    /*Copyright (C) 2022
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.*/
 }
 
 void pr(const std::string& R,const int& DLLF)
