@@ -11,9 +11,7 @@ const std::string PO[PO_SIZE] = \
 { \
     "--lf","--cr","--ht","--sp", \
     "--trim-left","--trim-right","--del-sign-at","--if", \
-    "--del-last-lf","--help","--version", \
-    "-l","-c","-t","-s","-b","-e","-d","-i","-r", \
-    "-h","-v"
+    "--del-last-lf","--help","--version" \
 };
 //-------------------------------------------------------------------------
 void free_memory();
