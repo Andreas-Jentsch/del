@@ -5,6 +5,7 @@
 #include <cstring>      // memset
 #include <iostream>
 #include <bitset>
+#include <iomanip>      // setw()
 //-------------------------------------------------------------------------
 const int BUFSIZE = 2048;
 const int CONTROL_CHARS_SIZE = 4;

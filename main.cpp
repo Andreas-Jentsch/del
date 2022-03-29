@@ -18,6 +18,7 @@ const std::string PO[PO_SIZE] = \
 //-------------------------------------------------------------------------
 void free_memory();
 void init_error_msg_array();
+void help();
 //-------------------------------------------------------------------------
 int main(int argc,char* argv[])
 {
@@ -74,6 +75,11 @@ int main(int argc,char* argv[])
                 case 'e': { e = 1; break; }
                 case 'd': { d = 1; break; }
                 case 'i': { i = 1; break; }
+                case 'h':
+                {
+                    help();
+                    return 0;
+                }
             }
         }
 
@@ -200,3 +206,51 @@ void init_error_msg_array()
     E_MSG[4] = "The " + PO[6] + " option requires a number as a value.";
 }
 //-------------------------------------------------------------------------
+void help()
+{
+    int fw = 2,sw = 21;
+    std::cout << std::left;
+    std::cout << "Usage: del [Option]..." << std::endl;
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-l, --lf";
+    std::cout << "Removes all line feeds. Escape sequence \"\\n\"." << std::endl;
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-c, --cr";
+    std::cout << "Removes all carriage returns. Escape sequence \"\\r\"." << std::endl;
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-t, --ht";
+    std::cout << "Removes all horizontal tabs. Escape sequence \"\\t\"." << std::endl;
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-s, --sp";
+    std::cout << "Removes all spaces." << std::endl;
+
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-b, --trim-left";
+    std::cout << "Removes spaces and the following control characters" << std::endl;
+    std::cout << std::setw(fw) << " " << std::setw(sw) << " ";
+    std::cout << "that appear to the left of the string. \"\\n \\t \\r\"" << std::endl;
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-e, --trim-right";
+    std::cout << "Removes spaces and the following control characters" << std::endl;
+    std::cout << std::setw(fw) << " " << std::setw(sw) << " ";
+    std::cout << "that appear to the right of the string. \"\\n \\t \\r\"" << std::endl;
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-d, --del-sign-at";
+    std::cout << "Deletes a character at the specified position. The" << std::endl;
+    std::cout << std::setw(fw) << " " << std::setw(sw) << " ";
+    std::cout << "first character has the index 1." << std::endl;
+    std::cout << std::setw(fw) << " " << std::setw(sw) << " ";
+    std::cout << "This option can only be combined with -i, --if." << std::endl;
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-i, --if";
+    std::cout << "Checks whether there is a specific character in the" << std::endl;
+    std::cout << std::setw(fw) << " " << std::setw(sw) << " ";
+    std::cout << "place of -d, --del-sign-at." << std::endl;
+    std::cout << std::setw(fw) << " " << std::setw(sw) << " ";
+    std::cout << "Only one character can be specified here." << std::endl;
+
+    std::cout << std::setw(fw) << " " << std::setw(sw) << "-h, --help";
+    std::cout << "Display this help and exit." << std::endl;
+
+    std::cout << std::endl << "Report bugs to <info@custom-app.org> (in English or German)." << std::endl;
+    std::cout << "Del Utils home page: <https://>" << std::endl;
+}
