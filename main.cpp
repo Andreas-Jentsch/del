@@ -157,8 +157,8 @@ int main(int argc,char* argv[])
     }
 
 
-    //std::cin.getline(del->line,BUFSIZE,'\0');
-    strcpy(del->line,std::string("\n H\r\nO\tK \n").c_str());
+    std::cin.getline(del->line,BUFSIZE,'\0');
+    // strcpy(del->line,std::string("\n H\r\nO\tK \n").c_str());
     del->set_bufsize();
 
 
