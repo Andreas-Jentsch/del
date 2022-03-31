@@ -43,6 +43,14 @@ int main(int argc,char* argv[])
     }
 
 
+    option = opt->map.find(opt->popts[8]->longname); // --help
+    if(option != opt->map.end()) {
+        help();
+        free_memory();
+        return 0;
+    }
+
+
     std::cin.getline(del->line,BUFSIZE,'\0');
     //strcpy(del->line,std::string("\n\t    Hello World\n\r\n Test String\n     ").c_str());
     for(int i = 0;i < BUFSIZE && del->line[i] != '\0';i++)
@@ -85,7 +93,6 @@ int main(int argc,char* argv[])
     }
 
 
-    //std::cout << del->data;
     for(t_data::iterator i = del->data.begin();i != del->data.end() && *i != '\0';i++)
     {
         std::cout << *i;
@@ -101,14 +108,16 @@ void free_memory()
 //-------------------------------------------------------------------------
 void init_options()
 {
-    opt->popts.push_back(new t_opt(false,"--lf","-l"));
+    opt->popts.push_back(new t_opt(false,"--lf","-l"));         //0
     opt->popts.push_back(new t_opt(false,"--cr","-c"));
     opt->popts.push_back(new t_opt(false,"--ht","-t"));
-    opt->popts.push_back(new t_opt(false,"--sp","-s"));
+    opt->popts.push_back(new t_opt(false,"--sp","-s"));         //3
     opt->popts.push_back(new t_opt(false,"--trim-left","-b"));
     opt->popts.push_back(new t_opt(false,"--trim-right","-e"));
     opt->popts.push_back(new t_opt(true,"--del-sign-at","-d"));
-    opt->popts.push_back(new t_opt(true,"--if","-i"));
+    opt->popts.push_back(new t_opt(true,"--if","-i"));          //7
+    opt->popts.push_back(new t_opt(false,"--help","-h"));
+    opt->popts.push_back(new t_opt(false,"--version","-v"));
 }
 //-------------------------------------------------------------------------
 void init_error_msg_array()
@@ -117,7 +126,6 @@ void init_error_msg_array()
     E_MSG[1] = "There is no option: ";
     E_MSG[2] = "Check length of: ";
     E_MSG[3] = "Check syntax near: ";
-    //E_MSG[4] = "The " + PO[6] + " option requires a number as a value.";
 }
 //-------------------------------------------------------------------------
 void help()
